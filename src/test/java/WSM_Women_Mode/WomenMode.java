@@ -97,31 +97,63 @@ public class WomenMode {
     public void TC03() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
         WebElement employeeName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='employee_name']")));
-//        Thread.sleep(10000);
-        String employeeName1 = employeeName.getText();
-        System.out.println(employeeName1);
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='#' and @class='dropdown-toggle avatar-circle no-background']"))).click();
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/en/dashboard/users/4384']"))).click();
-//        List<WebElement> list;
-//        List<Profile> list2 = new ArrayList<>();
-//        list = webDriver.findElements(By.xpath("//*[@class='table table-hover']//tr"));
-////        Thread.sleep(10000);
-//        list2 = tableInformationUser(list);
-//        String employeeName2 = list2.get(0).getInfor();
-//        Assert.assertEquals(employeeName2,employeeName1);
-//        WebElement staffName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='employee_name']")));
-//        String staffName1 = staffName.getText();
-//        Assert.assertEquals(staffName1,"Staff name");
-
+        String employeeName1 = employeeName.getAttribute("value");
+//        System.out.println(employeeName1);
+        List<Profile> list2 = new ArrayList<>();
+        list2 = tableInformationUser();
+        String employeeName2 = list2.get(0).getInfor();
+        Assert.assertEquals(employeeName2,employeeName1);
     }
+
+    @Test
+    public void TC04() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        WebElement employeeCode = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='employee_code']")));
+        String employeeCode1 = employeeCode.getAttribute("value");
+        System.out.println(employeeCode1);
+        List<Profile> list2 = new ArrayList<>();
+        list2 = tableInformationUser();
+        System.out.println(tableInformationUser());
+        String employeeCode2 = list2.get(5).getInfor();
+        Assert.assertEquals(employeeCode2,employeeCode1);
+    }
+
+    @Test
+    public void TC05() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        WebElement branch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='select2-workspace-selection-container']")));
+        String branch1 = branch.getText();
+        System.out.println(branch1);
+        List<Profile> list2 = new ArrayList<>();
+        list2 = tableInformationUser();
+        System.out.println(tableInformationUser());
+        String branch2 = list2.get(15).getInfor();
+        Assert.assertEquals(branch2,branch1);
+    }
+
+    public void TC06() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        WebElement group = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='select2-workspace-selection-container']")));
+        String group1 = group.getText();
+        System.out.println(group1);
+        List<Profile> list2 = new ArrayList<>();
+        list2 = tableInformationUser();
+        System.out.println(tableInformationUser());
+        String group2 = list2.get(15).getInfor();
+        Assert.assertEquals(group2,group1);
+    }
+
     @After
     public void tearDown(){
         webDriver.close();
         webDriver.quit();
     }
-    private List<Profile> tableInformationUser(List<WebElement> list){
-//        list = webDriver.findElements(By.xpath("//*[@class='table table-hover']//tr//td"));
-//        int b = list.size();
+    private List<Profile> tableInformationUser(){
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='#' and @class='dropdown-toggle avatar-circle no-background']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/en/dashboard/users/4384']"))).click();
+        List<WebElement> list;
+        list = webDriver.findElements(By.xpath("//*[@class='table table-hover']//tr"));
         List<Profile> profile = new ArrayList<>();
         for (WebElement element:list){
             List<WebElement> list1;
