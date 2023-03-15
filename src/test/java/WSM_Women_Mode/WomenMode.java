@@ -169,18 +169,28 @@ public class WomenMode {
         Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))));
         a.selectByValue("90");
         WebElement selectDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
-        WebElement selectDate1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
-        selectDate1.click();
-//        selectDate.sendKeys("2023/03/15");
+        selectDate.sendKeys("2023/03/15");
         String b = selectDate.getAttribute("value");
         System.out.println(b);
-//        String option = a.getFirstSelectedOption().getText();
-//        System.out.println(option);
-
-//        String b = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))).getText();
-//        System.out.println(b);
-
     }
+
+    @Test
+    public void TC09() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))));
+        a.selectByValue("90");
+        WebElement selectDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
+        selectDate.sendKeys("2023/02/15");
+        String b = selectDate.getAttribute("value");
+        System.out.println(b);
+        WebElement c = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='swap_type_swap_woman']")));
+        c.click();
+        String status = c.getAttribute("disabled");
+        String d = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='number_of_minutes_for_women_available']"))).getText();
+
+        Assert.assertEquals("Number of minutes for Women available in month 2: 0",d);
+        System.out.println(status);
+        }
 
     private List<Profile> tableInformationUser() {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
