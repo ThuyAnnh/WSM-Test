@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -137,22 +138,48 @@ public class WomenMode {
     @Test
     public void TC06() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
-        List<UserGroup> list2 = new ArrayList<>();
-        list2 = listGroup();
-        System.out.println(list2);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='select2-group-selection-container']"))).click();
-        WebElement group = webDriver.findElement(By.id("group-selection"));
-        Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='group-selection']"))));
-        a.selectByVisibleText("list2.get(0)");
-        a.getFirstSelectedOption();
-//
-//        System.out.println(firstElement.getText());
+        WebElement branch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='select2-group-selection-container']")));
+        String branch1 = branch.getText();
+        System.out.println(branch1);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='#' and @class='dropdown-toggle avatar-circle no-background']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/en/dashboard/users/4384']"))).click();
+        WebElement branch2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-original-title='Default group']//a")));
+        String branch3 = branch2.getText();
+        System.out.println(branch3);
+        Assert.assertEquals(branch3, branch1);
     }
 
-    @After
-    public void tearDown() {
-        webDriver.close();
-        webDriver.quit();
+    @Test
+    public void TC07() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='group-selection']"))));
+        a.selectByVisibleText("SUN*/Human Resources Unit Vietnam/Human Resources Strategy");
+//        a.selectByVisibleText("SUN*/Vietnam Education Unit/Education 2");
+        String b = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='select2-group-selection-container']"))).getText();
+        System.out.println(b);
+//        List<WebElement> list1;
+//        list1  = webDriver.findElements(By.xpath("//*[@id='group-selection']//option"));
+//        checkValueInDropDownList(list1, b);
+    }
+
+    @Test
+    public void TC08() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))));
+        a.selectByValue("90");
+        WebElement selectDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
+        WebElement selectDate1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
+        selectDate1.click();
+//        selectDate.sendKeys("2023/03/15");
+        String b = selectDate.getAttribute("value");
+        System.out.println(b);
+//        String option = a.getFirstSelectedOption().getText();
+//        System.out.println(option);
+
+//        String b = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))).getText();
+//        System.out.println(b);
+
     }
 
     private List<Profile> tableInformationUser() {
@@ -185,12 +212,32 @@ public class WomenMode {
         List<WebElement> list;
         list = webDriver.findElements(By.xpath("//*[@class='table table-hover']//tr//td//label//a"));
         List<UserGroup> group = new ArrayList<>();
-        group.add(list);
-//        for (WebElement element : list) {
-//            String a = element.getText();
-//            UserGroup group1 = new UserGroup(a);
-//            group.add(group1);
-//        }
+//        group.add(list);
+        for (WebElement element : list) {
+            String a = element.getText();
+            UserGroup group1 = new UserGroup(a);
+            group.add(group1);
+        }
         return group;
     }
+
+    private void checkValueInDropDownList(List<WebElement> list2, String b) {
+        int dem = 0;
+        for (WebElement element : list2) {
+            if (element.getText() == b) {
+                dem++;
+            }
+        }
+        if (dem >= 2) {
+            System.out.println("Bi trung dl");
+        } else {
+            System.out.println("Chi duy nhat");
+        }
+    }
+
+//    @After
+//    public void tearDown() {
+//        webDriver.close();
+//        webDriver.quit();
+//    }
 }

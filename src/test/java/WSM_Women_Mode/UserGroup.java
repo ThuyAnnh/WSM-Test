@@ -9,5 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class UserGroup {
-    List<WebElement> list;
+//    List<WebElement> list;
+    private String nameGroup;
 }
