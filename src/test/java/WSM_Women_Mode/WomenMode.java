@@ -4,10 +4,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -180,18 +177,39 @@ public class WomenMode {
         Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))));
         a.selectByValue("90");
         WebElement selectDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
-        selectDate.sendKeys("2023/02/15");
+        selectDate.sendKeys("2023/04/15");
         String b = selectDate.getAttribute("value");
         System.out.println(b);
-        WebElement c = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='swap_type_swap_woman']")));
-        c.click();
-        String status = c.getAttribute("disabled");
-        String d = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='number_of_minutes_for_women_available']"))).getText();
+        selectDate.sendKeys(Keys.TAB);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@for='swap_type_swap_woman']"))).click();
+        WebElement swap = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='swap_minutes']")));
+        swap.sendKeys("160");
+        swap.sendKeys(Keys.TAB);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-disable-with='Save']"))).click();
 
-        Assert.assertEquals("Number of minutes for Women available in month 2: 0",d);
-        System.out.println(status);
+//        JavascriptExecutor js = (JavascriptExecutor)webDriver;
+
+//        String c = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='alert alert-danger']"))).getText();
+//        String d = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='text-danger']"))).getText();
+//        Assert.assertEquals("The form contains 1 error",c);
+//        Assert.assertEquals("Exceeded the maximum time limit for making a form. Up to 2.5 hours",d);
+//        Assert.assertEquals("Number of minutes for Women available in month 2: 0",d);
+//        System.out.println(status);
         }
 
+    @Test
+    public void TC13() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        Select status = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='q_status_eq']"))));
+        status.selectByValue("1"); // 0:Pending; 1:Approved; 2:Rejected; 3:Forwarded; 4:Canceled
+        Select workspace = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='q_status_eq']"))));
+        workspace.selectByValue("5");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='month']"))).click();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='month']"))).click();
+        Select month = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td"))));
+        status.selectByValue("1"); // 0:Pending; 1:Approved; 2:Rejected; 3:Forwarded; 4:Canceled
+
+    }
     private List<Profile> tableInformationUser() {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='#' and @class='dropdown-toggle avatar-circle no-background']"))).click();
