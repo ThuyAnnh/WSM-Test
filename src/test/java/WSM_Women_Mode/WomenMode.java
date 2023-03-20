@@ -176,8 +176,8 @@ public class WomenMode {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-disable-with='Save']"))).click();
         String c = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='alert alert-danger']"))).getText();
         String d = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='text-danger']"))).getText();
-        Assert.assertEquals("The form contains 1 error",c);
-        Assert.assertEquals("Exceeded the maximum time limit for making a form. Up to 2.5 hours",d);
+        Assert.assertEquals("The form contains 1 error", c);
+        Assert.assertEquals("Exceeded the maximum time limit for making a form. Up to 2.5 hours", d);
     }
 
     @Test
@@ -185,11 +185,9 @@ public class WomenMode {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
         Select a = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_leave_type_id']"))));
         a.selectByValue("90");
-        selectDay(15,3,2020);
-        WebElement selectDate = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='request_leave_request_date']")));
-        String b = selectDate.getAttribute("value");
-//        System.out.println(b);
+        selectDay(1, 2, 2023);
         WebElement swap = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='swap_minutes']")));
+        swap.click();
         swap.sendKeys("5");
         Thread.sleep(5000);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@for='swap_type_swap_woman']"))).click();
@@ -204,7 +202,7 @@ public class WomenMode {
         status.selectByValue("1"); // 0:Pending; 1:Approved; 2:Rejected; 3:Forwarded; 4:Canceled
         Select workspace = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='q_workspace_id_eq']"))));
         workspace.selectByVisibleText("Hanoi Office");
-        selectMonth(3,2020);
+        selectMonth(3, 2020);
         WebElement buttonSearch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='btn btn-primary pull-right' and @type='submit']")));
         buttonSearch.click();
     }
@@ -263,59 +261,65 @@ public class WomenMode {
         }
     }
 
-    public void selectMonth(int month, int year){
+    public void selectMonth(int month, int year) {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
         WebElement monthPicker = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("month")));
         monthPicker.click();
         int currentYear = Year.now().getValue(), i;
-        if(year==currentYear){
-            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td//span["+month+"]")));
+        if (year == currentYear) {
+            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td//span[" + month + "]")));
             monthKeyWord.click();
-        }else if(year<=currentYear){
-            for (i=0;i<currentYear-year;i++){
+        } else if (year <= currentYear) {
+            for (i = 0; i < currentYear - year; i++) {
                 WebElement previousYearIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//th[1]")));
                 previousYearIcon.click();
             }
-            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td//span["+month+"]")));
+            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td//span[" + month + "]")));
             monthKeyWord.click();
-        }else {
-            for (i=0;i<year-currentYear;i++){
+        } else {
+            for (i = 0; i < year - currentYear; i++) {
                 WebElement nextYearIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//th[3]")));
                 nextYearIcon.click();
             }
-            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td//span["+month+"]")));
+            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//td//span[" + month + "]")));
             monthKeyWord.click();
         }
     }
 
-    public void selectDay(int day, int month, int year){
+    public void selectDay(int day, int month, int year) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(webDriver, 20);
         WebElement monthPicker = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("request_leave_request_date")));
         monthPicker.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-days']//*[@class='datepicker-switch']"))).click();
 
-//        JavascriptExecutor js = (JavascriptExecutor)webDriver;
-//        js.executeScript("document.getElementById('w3loginbtn').click()");//thuần javascrpit
         int currentYear = Year.now().getValue(), i;
-        if(year==currentYear){
-            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//span["+month+"]")));
+        if (year == currentYear) {
+            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//span[" + month + "]")));
             monthKeyWord.click();
-            WebElement dayKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//span["+month+"]")));
-            dayKeyWord.click();
-        }else if(year<=currentYear){
-            for (i=0;i<currentYear-year;i++){
+        } else if (year <= currentYear) {
+            for (i = 0; i < currentYear - year; i++) {
                 WebElement previousYearIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//*[@class='prev']")));
                 previousYearIcon.click();
             }
-            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//span["+month+"]")));
+            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//td//span[" + month + "]")));
             monthKeyWord.click();
-        }else {
-            for (i=0;i<year-currentYear;i++){
+        } else {
+            for (i = 0; i < year - currentYear; i++) {
                 WebElement nextYearIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='table-condensed']//*[@class='next']")));
                 nextYearIcon.click();
             }
-            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//td//span["+month+"]")));
+            WebElement monthKeyWord = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='datepicker-months']//td//span[" + month + "]")));
             monthKeyWord.click();
+        }
+        List<WebElement> list;
+        list = webDriver.findElements(By.xpath("//*[@class='datepicker-days']//td[@class='day']"));
+        for (WebElement d : list) {
+            System.out.println(d.getText());
+            String s = String.valueOf(day);
+            if (d.getText().equals(s)) {
+                d.click();
+                return;
+            }
         }
     }
 
