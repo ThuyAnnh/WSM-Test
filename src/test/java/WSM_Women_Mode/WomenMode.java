@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class WomenMode {
     private WebDriver webDriver;
@@ -205,6 +206,37 @@ public class WomenMode {
         selectMonth(3, 2020);
         WebElement buttonSearch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='btn btn-primary pull-right' and @type='submit']")));
         buttonSearch.click();
+    }
+
+    @Test
+    public void TC14() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        WebElement buttonApplication = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@title='Application']")));
+        buttonApplication.click();
+        WebElement buttonAsset = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-user-tool-id='61447']")));
+        buttonAsset.click();
+
+        Set<String> windowshandles = webDriver.getWindowHandles();//chứa tất cả windowHandles
+        List<String> listwindows = new ArrayList<>(windowshandles);// convert từ set thành list
+        String currentwd = webDriver.getWindowHandle();
+        System.out.println(currentwd);
+        String otherwd = null;
+        for (String CDwindow : listwindows) {
+            if (!CDwindow.equals(currentwd)) {
+                otherwd = CDwindow;
+            }
+        }
+//        System.out.println("otherwd" + otherwd);
+        webDriver.switchTo().window(otherwd);
+        webDriver.get("https://gas:123456*0@stg-dms.sun-asterisk.vn/");
+        WebElement buttonSignInViaWSM = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='/auth/framgia']")));
+        buttonSignInViaWSM.click();
+        WebElement toastMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='toast-message']")));
+        String message = toastMessage.getText();
+        System.out.println(message);
+        Assert.assertEquals(message,"Sign in with framgia successfully");
+
+
     }
 
     private List<Profile> tableInformationUser() {
