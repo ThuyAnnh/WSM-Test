@@ -1,6 +1,5 @@
 package WSM_Women_Mode;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -235,10 +234,14 @@ public class WomenMode {
         String message = toastMessage.getText();
         System.out.println(message);
         Assert.assertEquals(message,"Sign in with framgia successfully");
-
-
     }
 
+    public void listRequest(){
+        ArrayList<String[]> listRequest = new ArrayList<>();
+        String[] arr1 = { "B140288", "thuy_test", "11:57 03-19-2023", "03/15/2023", "Swap time", "Women's mode", "5 m", "Approved", "", "show", "Canceled"};
+        listRequest.add(arr1);
+
+    }
     private List<Profile> tableInformationUser() {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
 //        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@href='#' and @class='dropdown-toggle avatar-circle no-background']"))).click();
