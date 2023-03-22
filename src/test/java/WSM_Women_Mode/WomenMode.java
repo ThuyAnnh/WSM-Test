@@ -24,8 +24,8 @@ public class WomenMode {
         webDriver = new ChromeDriver();
         webDriver.manage().window().maximize();
 
-        webDriver.get("https://edev.sun-asterisk.vn/en/dashboard/users/4384/request_leaves/new");
-//        webDriver.get("https://edev.sun-asterisk.vn/en/dashboard/users/227/request_leaves");
+//        webDriver.get("https://edev.sun-asterisk.vn/en/dashboard/users/4384/request_leaves/new");
+        webDriver.get("https://edev.sun-asterisk.vn/en/dashboard/users/227/request_leaves");
 
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='wsm-btn btn-login']"))).click();
@@ -201,10 +201,14 @@ public class WomenMode {
         Select status = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='q_status_eq']"))));
         status.selectByValue("1"); // 0:Pending; 1:Approved; 2:Rejected; 3:Forwarded; 4:Canceled
         Select workspace = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='q_workspace_id_eq']"))));
-        workspace.selectByVisibleText("Hanoi Office");
-        selectMonth(3, 2020);
+        workspace.selectByVisibleText("Handico Office");
+        selectMonth(3, 2023);
+//        ArrayList<String[]> listRequest1 = new ArrayList<>();
+//        String[] arr1 = { "B140288", "thuy_test", "11:57 03-19-2023", "03/15/2023", "Swap time", "Women's mode", "5 m", "Approved", "", "show", "Canceled"};
+//        listRequest1.add(arr1);
         WebElement buttonSearch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='btn btn-primary pull-right' and @type='submit']")));
         buttonSearch.click();
+        System.out.println(listRequest());
     }
 
     @Test
@@ -235,12 +239,34 @@ public class WomenMode {
         System.out.println(message);
         Assert.assertEquals(message,"Sign in with framgia successfully");
     }
-
-    public void listRequest(){
-        ArrayList<String[]> listRequest = new ArrayList<>();
-        String[] arr1 = { "B140288", "thuy_test", "11:57 03-19-2023", "03/15/2023", "Swap time", "Women's mode", "5 m", "Approved", "", "show", "Canceled"};
-        listRequest.add(arr1);
-
+    public List<ListRequest> listRequest() {
+        List<WebElement> list;
+        List<WebElement> list2;
+        list = webDriver.findElements(By.xpath("//*[@class='request-item']"));
+        List<ListRequest> request = new ArrayList<>();
+        for (WebElement element : list) {
+            list2 = element.findElements(By.xpath("//td"));
+            String staffCode = list2.get(0).getText();
+            String staffName = list2.get(1).getText();
+            String timeOfCreation = list2.get(2).getText();
+            String kind = list2.get(3).getText();
+            String typeOfSwap = list2.get(4).getText();
+            String time = list2.get(5).getText();
+            String status = list2.get(6).getText();
+            String s = "text-center action-185981";
+            String beingHandledBy ="";
+            String action ="";
+            System.out.println("List2: " +list2.get(7));
+            if (list2.get(7).getAttribute("class") == s) {
+                System.out.println("aaaaaaaaaaaa");
+                list2 = element.findElements(By.xpath("//td//*[@class='btn-show-request btn btn-xs btn-default']"));
+                beingHandledBy = list2.get(0).getText();
+                action = list2.get(1).getText();
+            }
+            ListRequest request1 = new ListRequest(staffCode, staffName, timeOfCreation, kind, typeOfSwap, time, status, beingHandledBy, action);
+            request.add(request1);
+        }
+        return request;
     }
     private List<Profile> tableInformationUser() {
         WebDriverWait wait = new WebDriverWait(webDriver, 10);

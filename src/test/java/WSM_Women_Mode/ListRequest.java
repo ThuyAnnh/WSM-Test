@@ -7,5 +7,14 @@ import java.util.ArrayList;
 @Data
 @AllArgsConstructor
 public class ListRequest {
-    ArrayList<String[]> listRequest = new ArrayList<>();
+    private String staffCode;
+    private String staffName;
+    private String timeOfCreation;
+    private String kind;
+    private String typeOfSwap;
+    private String time;
+    private String status;
+    private String beingHandledBy;
+    private String action;
+
 }
