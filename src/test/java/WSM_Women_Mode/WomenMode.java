@@ -1,5 +1,6 @@
 package WSM_Women_Mode;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -203,12 +204,17 @@ public class WomenMode {
         Select workspace = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='q_workspace_id_eq']"))));
         workspace.selectByVisibleText("Handico Office");
         selectMonth(3, 2023);
-//        ArrayList<String[]> listRequest1 = new ArrayList<>();
-//        String[] arr1 = { "B140288", "thuy_test", "11:57 03-19-2023", "03/15/2023", "Swap time", "Women's mode", "5 m", "Approved", "", "show", "Canceled"};
-//        listRequest1.add(arr1);
+        ArrayList<String[]> listRequest1 = new ArrayList<>();
+        String[] arr1 = { "B140288", "thuy_test", "11:57 03-19-2023", "03/15/2023", "Swap time", "Women's mode", "5 m", "Approved", "", "Show", "Canceled"};
+        String[] arr2 = { "B140288", "thuy_test", "11:55 03-19-2023", "03/15/2023", "Swap time", "Women's mode", "20 m", "Approved", "", "Show", "Canceled"};
+        listRequest1.add(arr1);
+        listRequest1.add(arr2);
         WebElement buttonSearch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='btn btn-primary pull-right' and @type='submit']")));
         buttonSearch.click();
         System.out.println(listRequest());
+        System.out.println(listRequest1);
+        boolean isEqual = listRequest1.equals(listRequest());
+        System.out.println(isEqual);
     }
 
     @Test
@@ -239,6 +245,11 @@ public class WomenMode {
         System.out.println(message);
         Assert.assertEquals(message,"Sign in with framgia successfully");
     }
+    @Test
+    public void TC15() throws InterruptedException {
+        Thread.sleep(10000);
+        System.out.println(listRequest());
+    }
     public List<ListRequest> listRequest() {
         List<WebElement> list;
         List<WebElement> list2;
@@ -246,24 +257,20 @@ public class WomenMode {
         List<ListRequest> request = new ArrayList<>();
         for (WebElement element : list) {
             list2 = element.findElements(By.xpath("//td"));
-            String staffCode = list2.get(0).getText();
-            String staffName = list2.get(1).getText();
-            String timeOfCreation = list2.get(2).getText();
-            String kind = list2.get(3).getText();
-            String typeOfSwap = list2.get(4).getText();
-            String time = list2.get(5).getText();
-            String status = list2.get(6).getText();
-            String s = "text-center action-185981";
-            String beingHandledBy ="";
-            String action ="";
-            System.out.println("List2: " +list2.get(7));
-            if (list2.get(7).getAttribute("class") == s) {
-                System.out.println("aaaaaaaaaaaa");
-                list2 = element.findElements(By.xpath("//td//*[@class='btn-show-request btn btn-xs btn-default']"));
-                beingHandledBy = list2.get(0).getText();
-                action = list2.get(1).getText();
-            }
-            ListRequest request1 = new ListRequest(staffCode, staffName, timeOfCreation, kind, typeOfSwap, time, status, beingHandledBy, action);
+//            System.out.println(list2.get(2));
+            String staffCode = list2.get(2).getText();
+            String staffName = list2.get(3).getText();
+            String timeOfCreation = list2.get(4).getText();
+            String timeRequest = list2.get(5).getText();
+            String kind = list2.get(6).getText();
+            String typeOfSwap = list2.get(7).getText();
+            String time = list2.get(8).getText();
+            String status = list2.get(9).getText();
+            String beingHandledBy = list2.get(10).getText();
+            String action1 = "Show";
+            String action2 = "Canceled";
+
+            ListRequest request1 = new ListRequest(staffCode, staffName, timeOfCreation, timeRequest, kind, typeOfSwap, time, status, beingHandledBy, action1, action2);
             request.add(request1);
         }
         return request;
@@ -384,9 +391,9 @@ public class WomenMode {
         }
     }
 
-//    @After
-//    public void tearDown() {
-//        webDriver.close();
-//        webDriver.quit();
-//    }
+    @After
+    public void tearDown() {
+        webDriver.close();
+        webDriver.quit();
+    }
 }
